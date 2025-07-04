@@ -111,7 +111,7 @@ if _G.Interface == nil then
 
     --Buff Tab
     local buffSection = Tabs.Buff:AddSection("Buff")
-    local expBuffToggle = buffSection::AddToggle("ExpBuff", {Title = "Exp Buff", Default = false})
+    local expBuffToggle = buffSection:AddToggle("ExpBuff", {Title = "Exp Buff", Default = false})
     expBuffToggle:OnChanged(
         function()
             if expBuffToggle.Value then
@@ -135,7 +135,7 @@ if _G.Interface == nil then
         end
     )
 
-    local coinBuffToggle = buffSection::AddToggle("CoinBuff", {Title = "Coin Buff", Default = false})
+    local coinBuffToggle = buffSection:AddToggle("CoinBuff", {Title = "Coin Buff", Default = false})
     coinBuffToggle:OnChanged(
         function()
             if coinBuffToggle.Value then
@@ -159,7 +159,7 @@ if _G.Interface == nil then
         end
     )
 
-    local luckBuffToggle = buffSection::AddToggle("LuckBuff", {Title = "Luck Buff", Default = false})
+    local luckBuffToggle = buffSection:AddToggle("LuckBuff", {Title = "Luck Buff", Default = false})
     luckBuffToggle:OnChanged(
         function()
             if luckBuffToggle.Value then
@@ -183,7 +183,7 @@ if _G.Interface == nil then
         end
     )
 
-    local ghostBuffToggle = buffSection::AddToggle("GhostBuff", {Title = "Ghost Buff", Default = false})
+    local ghostBuffToggle = buffSection:AddToggle("GhostBuff", {Title = "Ghost Buff", Default = false})
     ghostBuffToggle:OnChanged(
         function()
             if ghostBuffToggle.Value then
