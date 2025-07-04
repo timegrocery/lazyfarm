@@ -36,7 +36,7 @@ if _G.Interface == nil then
             TabWidth = 100,
             Size = UDim2.fromOffset(550, 400),
             Acrylic = false,
-            Theme = "Rose",
+            Theme = "Dark",
             Transparency = "false",
             MinimizeKey = Enum.KeyCode.LeftControl
         }
