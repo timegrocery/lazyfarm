@@ -16,7 +16,7 @@ if _G.Interface == nil then
     -- ====== PERSISTENCE MECHANISM ======
     local CONFIGURATION = {
         FOLDER_NAME = "CROW",
-        SCRIPT_URL = "https://raw.githubusercontent.com/timegrocery/lazyfarm/refs/heads/main/lazyfarm.lua",
+        SCRIPT_URL = "https://raw.githubusercontent.com/timegrocery/lazyfarm/refs/heads/main/mini.lua",
         FILE_EXTENSION = ".lua"
     }
 
@@ -178,11 +178,47 @@ if _G.Interface == nil then
                 for buffName, isSelected in pairs(BuffDrop.Value) do
                     if isSelected then -- Only process if the buff is selected
                         if buffName == "Luck" then
-                            remotes:FireServer(161011)
-                        elseif buffName == "EXP" then
-                            remotes:FireServer(161012)
-                        elseif buffName == "Coin" then
                             remotes:FireServer(161013)
+                            task.wait(2)
+                            remotes:FireServer(161023)
+                            task.wait(2)
+                            remotes:FireServer(161033)
+                            task.wait(2)
+                            remotes:FireServer(161043)
+                            task.wait(2)
+                            remotes:FireServer(161053)
+                            task.wait(2)
+                            remotes:FireServer(161063)
+                            task.wait(2)
+                            remotes:FireServer(161073)
+                        elseif buffName == "EXP" then
+                            remotes:FireServer(161011)
+                            task.wait(2)
+                            remotes:FireServer(161021)
+                            task.wait(2)
+                            remotes:FireServer(161031)
+                            task.wait(2)
+                            remotes:FireServer(161041)
+                            task.wait(2)
+                            remotes:FireServer(161051)
+                            task.wait(2)
+                            remotes:FireServer(161061)
+                            task.wait(2)
+                            remotes:FireServer(161071)
+                        elseif buffName == "Coin" then
+                            remotes:FireServer(161012)
+                            task.wait(2)
+                            remotes:FireServer(161022)
+                            task.wait(2)
+                            remotes:FireServer(161032)
+                            task.wait(2)
+                            remotes:FireServer(161042)
+                            task.wait(2)
+                            remotes:FireServer(161052)
+                            task.wait(2)
+                            remotes:FireServer(161062)
+                            task.wait(2)
+                            remotes:FireServer(161072)
                         elseif buffName == "Ghost Ship" then
                             ghostRemote:FireServer()
                         end
