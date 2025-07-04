@@ -31,12 +31,12 @@ if _G.Interface == nil then
     local Window =
         Fluent:CreateWindow(
         {
-            Title = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name .. " | " .. Version,
-            SubTitle = "Auto Update by archangel",
+            Title = "LazyFarm Mini Version",
+            SubTitle = "| by archangel",
             TabWidth = 100,
             Size = UDim2.fromOffset(550, 400),
             Acrylic = false,
-            Theme = "Darker",
+            Theme = "Rose",
             Transparency = "false",
             MinimizeKey = Enum.KeyCode.LeftControl
         }
@@ -44,216 +44,152 @@ if _G.Interface == nil then
 
     local Tabs = {
         Player = Window:AddTab({Title = "Player", Icon = "user"}),
-        Autofarm = Window:AddTab({Title = "Autofarm", Icon = "repeat"}),
+        Buff = Window:AddTab({Title = "Buff", Icon = "user-plus"}),
+        Autofarm = Window:AddTab({Title = "Auto Farm", Icon = "repeat"}),
         Credits = Window:AddTab({Title = "Credits", Icon = "book"}),
         Settings = Window:AddTab({Title = "Settings", Icon = "settings"})
     }
 
-    Tabs.Admin = Window:AddTab({Title = "Admin", Icon = "shield"})
-
     local Options = Fluent.Options
 
-    Tabs.Player:AddParagraph(
-        {
-            Title = "Some features might not work together correctly.",
-            Content = ""
-        }
-    )
-
-    local secplayer = Tabs.Player:AddSection("Player")
+    -- Player Tab
+    local PlayerSection = Tabs.Player:AddSection("Player")
     local player = game.Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
     local humanoid = character:WaitForChild("Humanoid")
     local rootPart = character:WaitForChild("HumanoidRootPart")
-    local basespeed = 16
-    local basejump = humanoid.JumpPower
-
-    -- Movement variables
-    local speedMultiplier = 1
-    local moveConnection = nil
-
-    -- Services
-    local RunService = game:GetService("RunService")
-
-    -- Function to apply CFrame movement
-    local function applyMovement()
-        if not rootPart or not humanoid then
-            return
-        end
-
-        if humanoid.MoveDirection.Magnitude > 0 then
-            -- Simple movement in the direction the character is moving
-            local moveDirection = humanoid.MoveDirection
-            local speed = basespeed * speedMultiplier / 60
-
-            -- Move the character
-            rootPart.CFrame = rootPart.CFrame + (moveDirection * speed)
-        end
-    end
-
-    -- Disable default WalkSpeed
-    humanoid.WalkSpeed = 0
-
-    -- Start movement loop
-    moveConnection = RunService.Heartbeat:Connect(applyMovement)
-
-    -- Sliders
-    local SliderSpeed =
-        secplayer:AddSlider(
-        "SliderSpeed",
-        {
-            Title = "Movement Speed",
-            Description = "",
-            Default = basespeed,
-            Min = basespeed,
-            Max = basespeed * 8,
-            Rounding = 0,
-            Callback = function(Value)
-                speedMultiplier = Value / basespeed
-            end
-        }
-    )
-
-    local SliderJump =
-        secplayer:AddSlider(
-        "SliderJump",
-        {
-            Title = "Jump Power",
-            Description = "",
-            Default = basejump,
-            Min = basejump,
-            Max = basejump * 2,
-            Rounding = 0,
-            Callback = function(Value)
-                humanoid.UseJumpPower = true
-                humanoid.JumpPower = Value
-            end
-        }
-    )
-
-    -- Handle character respawn
-    player.CharacterAdded:Connect(
-        function(newCharacter)
-            character = newCharacter
-            humanoid = character:WaitForChild("Humanoid")
-            rootPart = character:WaitForChild("HumanoidRootPart")
-
-            -- Disable default WalkSpeed
-            humanoid.WalkSpeed = 0
-
-            -- Reconnect movement
-            if moveConnection then
-                moveConnection:Disconnect()
-            end
-            moveConnection = RunService.Heartbeat:Connect(applyMovement)
-
-            -- Restore settings
-            humanoid.UseJumpPower = true
-            humanoid.JumpPower = SliderJump.Value
-        end
-    )
-
-    local BuffDrop =
-        secplayer:AddDropdown(
-        "BuffDrop",
-        {
-            Title = "Buff Selection",
-            Values = {"Luck", "EXP", "Coin", "Ghost Ship"},
-            Multi = true,
-            Default = {}
-        }
-    )
-
-    secplayer:AddButton(
-        {
-            Title = "Add buff",
-            Callback = function()
-                local remotes =
-                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild(
-                    "ChooseStarterBonus"
-                )
-                local ghostRemote = game:GetService("ReplicatedStorage").Remotes.WorldEvent.GhostShipBuff
-
-                -- Get only the selected buffs (where State is true)
-                for buffName, isSelected in pairs(BuffDrop.Value) do
-                    if isSelected then -- Only process if the buff is selected
-                        if buffName == "Luck" then
-                            remotes:FireServer(161013)
-                            task.wait(2)
-                            remotes:FireServer(161023)
-                            task.wait(2)
-                            remotes:FireServer(161033)
-                            task.wait(2)
-                            remotes:FireServer(161043)
-                            task.wait(2)
-                            remotes:FireServer(161053)
-                            task.wait(2)
-                            remotes:FireServer(161063)
-                            task.wait(2)
-                            remotes:FireServer(161073)
-                        elseif buffName == "EXP" then
-                            remotes:FireServer(161011)
-                            task.wait(2)
-                            remotes:FireServer(161021)
-                            task.wait(2)
-                            remotes:FireServer(161031)
-                            task.wait(2)
-                            remotes:FireServer(161041)
-                            task.wait(2)
-                            remotes:FireServer(161051)
-                            task.wait(2)
-                            remotes:FireServer(161061)
-                            task.wait(2)
-                            remotes:FireServer(161071)
-                        elseif buffName == "Coin" then
-                            remotes:FireServer(161012)
-                            task.wait(2)
-                            remotes:FireServer(161022)
-                            task.wait(2)
-                            remotes:FireServer(161032)
-                            task.wait(2)
-                            remotes:FireServer(161042)
-                            task.wait(2)
-                            remotes:FireServer(161052)
-                            task.wait(2)
-                            remotes:FireServer(161062)
-                            task.wait(2)
-                            remotes:FireServer(161072)
-                        elseif buffName == "Ghost Ship" then
-                            ghostRemote:FireServer()
-                        end
-                    end
-                end
-            end
-        }
-    )
-
-    local autoclikck = secplayer:AddToggle("autoclikck", {Title = "Autoclick", Default = false})
-    autoclikck:OnChanged(
+    local autoAttack = PlayerSection:AddToggle("Auto Attack", {Title = "Auto Attack", Default = false})
+    autoAttack:OnChanged(
         function()
-            if autoclikck.Value then
-                while autoclikck.Value do
-                    task.wait(0.1) -- Reduced frequency to avoid lag
+            if autoAttack.Value then
+                while autoAttack.Value do
+                    task.wait(0.2) -- Reduced frequency to avoid lag
                     game:GetService("Players").LocalPlayer.Character.Weapon:Activate()
                 end
             end
         end
     )
 
-    local Players = game:GetService("Players")
-    local VirtualUser = game:GetService("VirtualUser")
-    local player = Players.LocalPlayer
-
-    local secauto = Tabs.Autofarm:AddSection("Global")
-    local autore = secauto:AddToggle("autorebirth", {Title = "Auto Rebirth", Default = false})
-    autore:OnChanged(
+    local autoRebirthToggle = PlayerSection:AddToggle("AutoRebirth", {Title = "Auto Rebirth", Default = false})
+    autoRebirthToggle:OnChanged(
         function()
-            if autore.Value then
-                while autore.Value do
-                    task.wait(5) -- Reduced frequency to avoid lag
-                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Rebirth"):WaitForChild(
-                        "TryRebirth"
-                    ):FireServer()
+            if autoRebirthToggle.Value then
+                while autoRebirthToggle.Value do
+                    task.wait(10) -- Reduced frequency to avoid lag
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Rebirth"):WaitForChild("TryRebirth"):FireServer()
+                end
+            end
+        end
+    )
+
+    local autoRollToggle = PlayerSection:AddToggle("AutoRoll", {Title = "Auto Roll", Default = false})
+    autoRollToggle:OnChanged(
+        function()
+            if autoRollToggle.Value then
+                while autoRollToggle.Value do
+                    task.wait(10) -- Reduced frequency to avoid lag
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("RollChest"):WaitForChild("SetAutoCmd"):FireServer(true)
+                end
+            end
+        end
+    )
+
+    local autoDiceToggle = PlayerSection:AddToggle("AutoDice", {Title = "Auto Dice", Default = false})
+    autoDiceToggle:OnChanged(
+        function()
+            if autoDiceToggle.Value then
+                while autoDiceToggle.Value do
+                    task.wait(20) -- Reduced frequency to avoid lag
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Reward"):WaitForChild("RollDices"):FireServer()
+                end
+            end
+        end
+    )
+
+    -- Services
+    local RunService = game:GetService("RunService")
+
+    --Buff Tab
+    local buffSection = Tabs.Buff:AddSection("Buff")
+    local expBuffToggle = buffSection::AddToggle("ExpBuff", {Title = "Exp Buff", Default = false})
+    expBuffToggle:OnChanged(
+        function()
+            if expBuffToggle.Value then
+                while expBuffToggle.Value do
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161011)
+                    task.wait(1)
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161021)
+                    task.wait(1)
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161031)
+                    task.wait(1)
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161041)
+                    task.wait(1)
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161051)
+                    task.wait(1)
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161061)
+                    task.wait(1)
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161071)
+                    task.wait(3600)
+                end
+            end
+        end
+    )
+
+    local coinBuffToggle = buffSection::AddToggle("CoinBuff", {Title = "Coin Buff", Default = false})
+    coinBuffToggle:OnChanged(
+        function()
+            if coinBuffToggle.Value then
+                while coinBuffToggle.Value do
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161012)
+                    task.wait(1)
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161022)
+                    task.wait(1)
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161032)
+                    task.wait(1)
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161042)
+                    task.wait(1)
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161052)
+                    task.wait(1)
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161062)
+                    task.wait(1)
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161072)
+                    task.wait(3600)
+                end
+            end
+        end
+    )
+
+    local luckBuffToggle = buffSection::AddToggle("LuckBuff", {Title = "Luck Buff", Default = false})
+    luckBuffToggle:OnChanged(
+        function()
+            if luckBuffToggle.Value then
+                while luckBuffToggle.Value do
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161013)
+                    task.wait(1)
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161023)
+                    task.wait(1)
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161033)
+                    task.wait(1)
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161043)
+                    task.wait(1)
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161053)
+                    task.wait(1)
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161063)
+                    task.wait(1)
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Guide"):WaitForChild("ChooseStarterBonus"):FireServer(161073)
+                    task.wait(3600)
+                end
+            end
+        end
+    )
+
+    local ghostBuffToggle = buffSection::AddToggle("GhostBuff", {Title = "Ghost Buff", Default = false})
+    ghostBuffToggle:OnChanged(
+        function()
+            if ghostBuffToggle.Value then
+                while ghostBuffToggle.Value do
+                    game:GetService("ReplicatedStorage").Remotes.WorldEvent.GhostShipBuff:FireServer()
+                    task.wait(900)
                 end
             end
         end
@@ -262,6 +198,9 @@ if _G.Interface == nil then
     local Workspace = game:GetService("Workspace")
     local RunService = game:GetService("RunService")
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local Players = game:GetService("Players")
+    local VirtualUser = game:GetService("VirtualUser")
+    local player = Players.LocalPlayer
 
     -- Advanced Dungeon Detection System
     local DungeonSystem = {
@@ -665,7 +604,7 @@ if _G.Interface == nil then
         secauto1:AddSlider(
         "slidauto",
         {
-            Title = "Enemy Distance",
+            Title = "Weapon Range",
             Default = 5,
             Min = 1,
             Max = 15,
@@ -832,14 +771,14 @@ if _G.Interface == nil then
         {
             name = "Star Confessor",
             difficulty = "Hard",
-            npcBaseId = 101024,
+            npcBaseId = 101037,
             island = 5,
             isBoss = false
         },
         {
             name = "Zenith Templar",
             difficulty = "Extreme",
-            npcBaseId = 101025,
+            npcBaseId = 101038,
             island = 5,
             isBoss = false
         },
@@ -978,7 +917,7 @@ if _G.Interface == nil then
         end
 
         local HumanoidRootPart = character.HumanoidRootPart
-        local closest, dist = nil, math.huge
+        local closest, dist = nil, 200
         local enemyFolder = workspace:FindFirstChild("EnemyFolder")
 
         if enemyFolder then
@@ -1146,7 +1085,7 @@ if _G.Interface == nil then
         secauto:AddToggle(
         "item_collection",
         {
-            Title = "Autofarm Resources",
+            Title = "Auto Collect Resources",
             Default = false
         }
     )
@@ -1691,7 +1630,7 @@ if _G.Interface == nil then
         -- Small delay to ensure services are available
         task.wait(1)
         
-        -- Execute the Arise script
+        -- Execute the script
         loadstring(game:HttpGet("]] ..
             CONFIGURATION.SCRIPT_URL ..
                 [["))()
@@ -1703,7 +1642,7 @@ if _G.Interface == nil then
                         [["))()
             loadstring(readfile("]=] .. targetFilePath .. [=["))()
         ]=])
-    ]]
+        ]]
 
         -- Step 7: Queue the teleport script
         local queueSuccess, queueError =
