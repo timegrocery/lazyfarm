@@ -786,7 +786,7 @@ if _G.Interface == nil then
             name = "Odyus Storm",
             difficulty = "",
             npcBaseId = 101026,
-            island = 5, -- Fixed: was island 4, should be 5 based on position
+            island = 5,
             isBoss = true
         }
     }
@@ -815,6 +815,21 @@ if _G.Interface == nil then
     local startdungeon =
         secauto1:AddToggle("startdungeon", {Title = "Start Dungeon", Description = "Cooldown: 10s", Default = false})
 
+    local goldDugeon = secauto1:AddToggle("goldDugeon", {Title = "Auto Gold Dungeon", Description = "Cooldown: 10s", Deafault = false})
+    goldDugeon:OnChanged(
+        function()
+            if goldDugeon.Value then
+                while goldDugeon.Value do
+                    local args = {
+                        workspace:WaitForChild("Match"):WaitForChild("1-1"):WaitForChild("Match2"):WaitForChild("Match")
+                    }
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("Region"):WaitForChild("Match"):WaitForChild("Enter"
+                        ):FireServer(unpack(args))
+                    task.wait(10)
+                end
+            end
+        end
+    )
     -- Variable to store the selected dungeon index
     local selectedDungeonIndex = nil
 
